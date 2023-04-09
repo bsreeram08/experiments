@@ -11,7 +11,9 @@
         "outputPath": "dist/packages/dexie-ts-extended",
         "main": "packages/dexie-ts-extended/src/index.ts",
         "tsConfig": "packages/dexie-ts-extended/tsconfig.lib.json",
-        "assets": ["packages/dexie-ts-extended/*.md"]
+        "assets": ["packages/dexie-ts-extended/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true,
+        "buildableProjectDepsInPackageJsonType": "peerDependencies"
       }
     },
     "publish": {
