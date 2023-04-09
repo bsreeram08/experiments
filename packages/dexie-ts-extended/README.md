@@ -95,3 +95,7 @@ An object that contains the following methods:
 
 - Fix test scripts to emulate dexie with Jest.
 - Infer Table name and schema from the provided Config object.
+
+### Links
+
+[Git Repository](https://github.com/bsreeram08/experiments/tree/main/packages/dexie-ts-extended)
