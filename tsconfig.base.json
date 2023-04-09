@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@srb/dexie-ts-extended": ["packages/dexie-ts-extended/src/index.ts"]
+      "@mareers/dexie-ts-extended": ["packages/dexie-ts-extended/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
