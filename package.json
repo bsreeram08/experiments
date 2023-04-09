@@ -2,13 +2,19 @@
   "name": "mareers",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky install"
+  },
   "private": true,
   "dependencies": {
     "dexie": "^3.2.3",
+    "husky": "^8.0.3",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.5.1",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@commitlint/config-nx-scopes": "^17.4.3",
     "@nrwl/eslint-plugin-nx": "15.9.2",
     "@nrwl/jest": "15.9.2",
     "@nrwl/js": "15.9.2",
@@ -23,10 +29,21 @@
     "generate-license-file": "^2.0.0",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
+    "lint-staged": "^13.2.1",
     "nx": "15.9.2",
     "prettier": "^2.6.2",
     "ts-jest": "^29.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.9.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md,ts}": [
+      "nx format:write --uncommitted"
+    ]
   }
 }
