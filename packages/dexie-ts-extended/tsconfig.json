@@ -8,7 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "outFile": "../../dist/dexie-ts-extended/index.js"
+    "outFile": "../../dist/packages/dexie-ts-extended/index.js"
   },
   "files": [],
   "include": [],
