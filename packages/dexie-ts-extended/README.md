@@ -1,17 +1,17 @@
-# dexie-ts-extended
+# @mareers/dexie-ts-extended
 
 This is a simple wrapper for Dexie.js library that provides a type-safe interface for managing IndexedDB databases.
 
 ## Installation
 
 ```sh
-npm install --save dexie-ts-extended
+npm install --save @mareers/dexie-ts-extended
 ```
 
 Usage
 
 ```typescript
-import { database } from 'dexie-ts-extended';
+import { database } from '@mareers/dexie-ts-extended';
 
 type Tables = {
   books: {
@@ -98,4 +98,4 @@ An object that contains the following methods:
 
 ### Links
 
-[Git Repository](https://github.com/bsreeram08/experiments/tree/main/packages/dexie-ts-extended)
+[Git Repository](https://github.com/bsreeram08/experiments/tree/main/packages/@srb/dexie-ts-extended)

@@ -4,6 +4,6 @@ Welcome to the Mareers monorepo! This is a collection of TypeScript libraries an
 
 ## Libraries
 
-### @srb/DexieTsExtended
+### @mareers/DexieTsExtended
 
-@srb/DexieTsExtended is a library that extends the Dexie.js library, which is a wrapper around indexedDB. With this library, you can easily create tables, add indexes to tables, and perform CRUD operations on your database. This library is especially useful for applications that require offline data storage, such as Progressive Web Applications (PWAs).
+@mareers/DexieTsExtended is a library that extends the Dexie.js library, which is a wrapper around indexedDB. With this library, you can easily create tables, add indexes to tables, and perform CRUD operations on your database. This library is especially useful for applications that require offline data storage, such as Progressive Web Applications (PWAs).
