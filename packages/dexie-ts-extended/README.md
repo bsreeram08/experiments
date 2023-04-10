@@ -98,4 +98,4 @@ An object that contains the following methods:
 
 ### Links
 
-[Git Repository](https://github.com/bsreeram08/experiments/tree/main/packages/@srb/dexie-ts-extended)
+[Git Repository](https://github.com/bsreeram08/experiments/tree/main/packages/dexie-ts-extended)
