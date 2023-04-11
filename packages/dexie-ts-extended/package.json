@@ -4,6 +4,10 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bsreeram08/experiments/tree/main/packages/dexie-ts-extended"
+    "url": "https://github.com/bsreeram08/experiments",
+    "directory": "packages/dexie-ts-extended"
+  },
+  "publishConfig":{
+    "registry": "https://npm.pkg.github.com"
   }
 }
