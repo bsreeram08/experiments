@@ -1,9 +1,8 @@
-name:
-
+name: 'publish-packages'
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 env:
