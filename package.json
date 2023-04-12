@@ -7,6 +7,8 @@
   },
   "private": true,
   "dependencies": {
+    "@google-cloud/bigquery": "^6.2.0",
+    "@jetit/id": "^0.0.11",
     "dexie": "^3.2.3",
     "husky": "^8.0.3",
     "tslib": "^2.3.0"
@@ -44,5 +46,9 @@
     "*.{js,json,md,ts}": [
       "nx format:write --uncommitted"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bsreeram08/experiments"
   }
 }

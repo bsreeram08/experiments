@@ -1,0 +1,13 @@
+{
+    "name": "@mareers/google-bigquery-ts",
+    "version": "0.0.1",
+    "type": "commonjs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bsreeram08/experiments",
+        "directory": "packages/google-bigquery-ts"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
+}
