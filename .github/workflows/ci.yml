@@ -61,7 +61,9 @@ jobs:
             ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
             
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install @nrwl/nx-linux-x64-gnu
           
       - run: |
           npx nx affected --target lint --parallel 3
