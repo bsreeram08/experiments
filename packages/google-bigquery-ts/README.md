@@ -187,7 +187,7 @@ Here is an example of how to use the crud function:
 
 ```typescript
 import { BigQuery } from '@google-cloud/bigquery';
-import { crud } from '@jetit/bigquery-crud';
+import { crud } from '@mareers/google-bigquery-ts';
 
 const bqClient = new BigQuery();
 const datasetName = 'my_dataset';
