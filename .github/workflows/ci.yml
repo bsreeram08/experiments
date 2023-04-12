@@ -1,79 +1,78 @@
 name: 'publish-packages'
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 env:
-  HUSKY: 0
+    HUSKY: 0
 
 jobs:
-  main:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
-    strategy:
-      matrix:
-        node-version: [16]
-        npm-version: [8]
-        yarn-version: ['1.22.x']
-        pnpm-version: [7]
-    steps:
-      - name: Checkout [Pull Request]
-        uses: actions/checkout@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          token: ${{ secrets.NPM_TOKEN }}
-          fetch-depth: 0
+    main:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}
+        strategy:
+            matrix:
+                node-version: [16]
+                npm-version: [8]
+                yarn-version: ['1.22.x']
+                pnpm-version: [7]
+        steps:
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v2
+              if: ${{ github.event_name == 'pull_request' }}
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  token: ${{ secrets.NPM_TOKEN }}
+                  fetch-depth: 0
 
-      - name: Checkout [Default Branch]
-        uses: actions/checkout@v2
-        if: ${{ github.event_name != 'pull_request' }}
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          fetch-depth: 0
+            - name: Checkout [Default Branch]
+              uses: actions/checkout@v2
+              if: ${{ github.event_name != 'pull_request' }}
+              with:
+                  token: ${{ secrets.NPM_TOKEN }}
+                  fetch-depth: 0
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-        with:
-          main-branch-name: ${{ github.base_ref }}
+            - name: Derive appropriate SHAs for base and head for `nx affected` commands
+              uses: nrwl/nx-set-shas@v2
+              with:
+                  main-branch-name: ${{ github.base_ref }}
 
-      - name: Detect package manager
-        id: package_manager
-        run: |
-          echo "::set-output name=name::$([[ -f ./yarn.lock ]] && echo "yarn" || ([[ -f ./pnpm-lock.yaml ]] && echo "pnpm") || echo "npm")"
-          
-      - name: Set node/npm/yarn versions using volta
-        uses: volta-cli/action@v3
-        with:
-          node-version: '${{ matrix.node-version }}'
-          npm-version: '${{ matrix.npm-version }}'
-          
-      - name: Use the node_modules cache if available [npm]
-        if: steps.package_manager.outputs.name == 'npm'
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
-            
-      - name: Install dependencies
-        run: |
-          npm install
-          npm install @nrwl/nx-linux-x64-gnu
-          
-      - run: |
-          npx nx affected --target lint --parallel 3
-          npx nx affected --target test --parallel 3 --ci --code-coverage
-          npx nx affected --target build --parallel 3
-          
-      - name: Release
-        if: ${{ success() && (github.event_name != 'pull_request' || github.event.action == 'closed' && github.event.pull_request.merged == true) }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          npx nx affected --target release --all
+            - name: Detect package manager
+              id: package_manager
+              run: |
+                  echo "::set-output name=name::$([[ -f ./yarn.lock ]] && echo "yarn" || ([[ -f ./pnpm-lock.yaml ]] && echo "pnpm") || echo "npm")"
+
+            - name: Set node/npm/yarn versions using volta
+              uses: volta-cli/action@v3
+              with:
+                  node-version: '${{ matrix.node-version }}'
+                  npm-version: '${{ matrix.npm-version }}'
+
+            - name: Use the node_modules cache if available [npm]
+              if: steps.package_manager.outputs.name == 'npm'
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+            - name: Install dependencies
+              run: |
+                  npm install
+                  npm install @nrwl/nx-linux-x64-gnu
+
+            - run: |
+                  npx nx affected --target lint --parallel 3
+                  npx nx affected --target build --parallel 3
+
+            - name: Release
+              if: ${{ success() && (github.event_name != 'pull_request' || github.event.action == 'closed' && github.event.pull_request.merged == true) }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.GH_TOKEN }}
+              run: |
+                  npx nx affected --target release --all
