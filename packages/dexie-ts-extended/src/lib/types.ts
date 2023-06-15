@@ -9,17 +9,21 @@ export type TShape<TableName extends string> = {
     };
 };
 
-export interface ICreateChange<Keys, Type> {
+export interface ICreateChange<
+    Keys extends Key,
+    TableName extends string,
+    Type
+> {
     type: DatabaseChangeType.Create;
-    table: string;
+    table: TableName;
     key: Keys;
     obj: Type;
     source?: string;
 }
 
-export type IUpdateChange<Keys, Type> = {
+export type IUpdateChange<Keys extends Key, TableName extends string, Type> = {
     type: DatabaseChangeType.Update;
-    table: string;
+    table: TableName;
     key: Keys;
     obj: Type;
     oldObj: Type;
@@ -27,18 +31,26 @@ export type IUpdateChange<Keys, Type> = {
     mods: Partial<Type>;
 };
 
-export interface IDeleteChange<Keys extends Key, Type> {
+export interface IDeleteChange<
+    Keys extends Key,
+    TableName extends string,
+    Type
+> {
     type: DatabaseChangeType.Delete;
-    table: string;
+    table: TableName;
     key: Keys;
     oldObj: Type;
     source?: string;
 }
 
-export type DatabaseChange<Keys extends Key, Type> =
-    | ICreateChange<Keys, Type>
-    | IUpdateChange<Keys, Type>
-    | IDeleteChange<Keys, Type>;
+export type DatabaseChange<
+    Keys extends Key,
+    TableName extends string,
+    Type = unknown
+> =
+    | ICreateChange<Keys, TableName, Type>
+    | IUpdateChange<Keys, TableName, Type>
+    | IDeleteChange<Keys, TableName, Type>;
 
 type Key = string | number | symbol;
 

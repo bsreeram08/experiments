@@ -60,14 +60,14 @@ export function database<
 
     function onChanges<T extends TableName>(
         tableName: T
-    ): Observable<DatabaseChange<keyof Shape[T], Shape>> {
+    ): Observable<DatabaseChange<keyof Shape[T], TableName, Shape>> {
         return fromEventPattern((handler) => db.on('changes', handler)).pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((data: any) => data[0]),
-            map((changes: DatabaseChange<T, Shape>[]) =>
+            map((changes: DatabaseChange<T, TableName, Shape>[]) =>
                 changes.filter((x) => !tableName || x.table === tableName)
             ),
-            map((changes: DatabaseChange<T, Shape>[]) => changes[0])
+            map((changes: DatabaseChange<T, TableName, Shape>[]) => changes[0])
         );
     }
 
