@@ -10,7 +10,9 @@
     "@google-cloud/bigquery": "^6.2.0",
     "@jetit/id": "^0.0.11",
     "dexie": "^3.2.3",
+    "dexie-observable": "^4.0.1-beta.13",
     "husky": "^8.0.3",
+    "rxjs": "^7.8.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
