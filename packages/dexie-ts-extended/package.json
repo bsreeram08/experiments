@@ -1,13 +1,13 @@
 {
-  "name": "@mareers/dexie-ts-extended",
-  "version": "0.0.5",
-  "type": "commonjs",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bsreeram08/experiments",
-    "directory": "packages/dexie-ts-extended"
-  },
-  "publishConfig":{
-    "registry": "https://npm.pkg.github.com"
-  }
+    "name": "@mareers/dexie-ts-extended",
+    "version": "1.0.0",
+    "type": "commonjs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bsreeram08/experiments",
+        "directory": "packages/dexie-ts-extended"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
 }
