@@ -14,23 +14,23 @@ Usage
 import { database } from '@mareers/dexie-ts-extended';
 
 type Tables = {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-  };
+    books: {
+        id: string;
+        title: string;
+        author: string;
+    };
 };
 
 const db = database<keyof Tables, Tables>({
-  databaseName: 'my-db',
-  databaseVersion: 1,
-  tables: [
-    {
-      tableName: 'books',
-      primaryKeyIndex: 'id',
-      indexes: ['title', 'author'],
-    },
-  ],
+    databaseName: 'my-db',
+    databaseVersion: 1,
+    tables: [
+        {
+            tableName: 'books',
+            primaryKeyIndex: 'id',
+            indexes: ['title', 'author'],
+        },
+    ],
 });
 
 await db.start();
@@ -38,9 +38,9 @@ await db.start();
 const books = db.getTable('books');
 
 await books.add({
-  id: 1,
-  title: 'Dune',
-  author: 'Frank Herbert',
+    id: 1,
+    title: 'Dune',
+    author: 'Frank Herbert',
 });
 
 const allBooks = await books.toArray();
@@ -58,43 +58,47 @@ Creates a new instance of the database.
 
 ### Parameters
 
-- config: An object that contains the following properties:
+-   config: An object that contains the following properties:
 
-  - databaseName (required): The name of the database.
-  - databaseVersion (required): The version number of the database.
-  - tables (required): An array of objects that describe the tables in the database.
+    -   databaseName (required): The name of the database.
+    -   databaseVersion (required): The version number of the database.
+    -   tables (required): An array of objects that describe the tables in the database.
 
-    Each object must contain the following properties:
+        Each object must contain the following properties:
 
-    - tableName (required): The name of the table.
-    - primaryKeyIndex (optional): The name of the primary key index. Defaults to
-      `++id`.
-    - indexes (optional): An array of names for indexes to be created on the table.
+        -   tableName (required): The name of the table.
+        -   primaryKeyIndex (optional): The name of the primary key index. Defaults to
+            `++id`.
+        -   indexes (optional): An array of names for indexes to be created on the table.
 
 ### Returns
 
 An object that contains the following methods:
 
-- start():
+-   start():
 
-  Opens the database.
+    Opens the database.
 
-- getTable(name):
+-   getTable(name):
 
-  Returns a table object for the specified table name.
+    Returns a table object for the specified table name.
 
-- close():
+-   close():
 
-  Closes the database.
+    Closes the database.
 
-- getTable(name)
+-   getTable(name)
 
-  Returns a table object for the specified table name.
+    Returns a table object for the specified table name.
+
+-   onChanges(name)
+
+    Returns an observable object for changes such as Create, Update and Delete.
 
 ## TODO
 
-- Fix test scripts to emulate dexie with Jest.
-- Infer Table name and schema from the provided Config object.
+-   Fix test scripts to emulate dexie with Jest.
+-   Infer Table name and schema from the provided Config object.
 
 ### Links
 

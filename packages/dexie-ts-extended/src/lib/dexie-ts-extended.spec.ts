@@ -1,5 +1,6 @@
 import { Table } from 'dexie';
 import { ExtendedDexie, database } from './dexie-ts-extended';
+import { DatabaseChangeType } from 'dexie-observable/api';
 
 describe('database function', () => {
     type Tables = {
@@ -43,6 +44,14 @@ describe('database function', () => {
     it('should be able to retrieve a table from the database', async () => {
         const usersTable: Table = db.getTable('users');
         expect(usersTable).toBeDefined();
+    });
+
+    it('subscribe to changes in the table and print', async () => {
+        const changesOnUsers = db.onChanges('users');
+        changesOnUsers.subscribe((changeObject) => {
+            if (changeObject.type === DatabaseChangeType.Update)
+                expect(changeObject.obj.users).toBeDefined();
+        });
     });
 
     it('should throw an error if the database is not open', async () => {
