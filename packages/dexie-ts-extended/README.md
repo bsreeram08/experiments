@@ -47,6 +47,19 @@ const allBooks = await books.toArray();
 
 console.log(allBooks);
 
+const booksObservable = db.onChanges('books');
+booksObservable.subscribe(async (changeObject) => {
+    if (changeObject.type === DatabaseChangeType.Update) {
+        console.log(changeObject.obj.books); // Latest changed object
+        // Do change type operations.
+        await sendDataToApi(changeObject.obj.books.id, changeObject.obj.books); // example function
+    }
+});
+
+async function sendDataToApi(bookId: string, book: Tables['books']): Promise<void> {
+    // Send data to database
+}
+
 db.closeDatabase();
 ```
 
