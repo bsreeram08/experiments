@@ -1,6 +1,6 @@
 {
     "name": "@mareers/dexie-ts-extended",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "commonjs",
     "repository": {
         "type": "git",
