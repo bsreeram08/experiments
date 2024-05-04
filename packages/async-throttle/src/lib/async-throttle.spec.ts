@@ -2,8 +2,8 @@ import { AsyncThrottle, TAsyncThrottleFunction } from './async-throttle';
 
 describe('constrainedAsync', () => {
     it('should work', async () => {
-        const cs = new AsyncThrottle({
-            completionCallback: async (data) => {
+        const cs = new AsyncThrottle<unknown>({
+            completionCallback: async function (data) {
                 console.log(data);
             },
             failedCallback: (error) => {
