@@ -25,18 +25,6 @@
             "options": {
                 "jestConfig": "packages/async-throttle/jest.config.ts"
             }
-        },
-        "version": {
-            "executor": "@jscutlery/semver:version",
-            "options": {
-                "preset": "conventional"
-            }
-        },
-        "publish": {
-            "executor": "ngx-deploy-npm:deploy",
-            "options": {
-                "access": "public"
-            }
         }
     }
 }
