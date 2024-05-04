@@ -1,4 +1,7 @@
-type ConstrainedSuccessCallback<T> = (result: T) => Promise<void>;
+type ConstrainedSuccessCallback<T> = (result: {
+    value: T;
+    id: string;
+}) => Promise<void>;
 type ConstrainedFailedCallback = (error: Error) => void;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TAny = any;
@@ -15,8 +18,8 @@ type TQueueItem = {
 /**
  * The Constrained async options that controls the Queue
  */
-type TConstrainedAsyncOptions = {
-    completionCallback: ConstrainedSuccessCallback<TAny>;
+type TConstrainedAsyncOptions<T> = {
+    completionCallback: ConstrainedSuccessCallback<T>;
     failedCallback: ConstrainedFailedCallback;
     maxThreshold: number;
     /**
@@ -25,11 +28,11 @@ type TConstrainedAsyncOptions = {
     delayExecutions: number;
     loggingFunction: (message: string) => void;
 };
-export class AsyncThrottle {
+export class AsyncThrottle<T = TAny> {
     private queue: Queue<TQueueItem>;
     private currentQueued: number;
     private destroy: boolean;
-    constructor(private options: TConstrainedAsyncOptions) {
+    constructor(private options: TConstrainedAsyncOptions<T>) {
         this.queue = new Queue();
         this.currentQueued = 0;
         this.destroy = false;
@@ -75,11 +78,20 @@ export class AsyncThrottle {
                 this.queue.size !== 0
             ) {
                 this.options.loggingFunction('Called to execute');
-                this.currentQueued++;
-                const func = this.queue.deQueue();
-                if (func) await this.functionExecutor(func);
-            } else if (this.currentQueued == this.options.maxThreshold) {
-                this.options.loggingFunction('Threshold reached');
+                const batch: Array<() => Promise<void>> = [];
+                for (
+                    let i = 0;
+                    i < this.options.maxThreshold && this.queue.size > 0;
+                    i++
+                ) {
+                    this.currentQueued++;
+                    const func = this.queue.deQueue();
+                    if (func)
+                        batch.push(() =>
+                            this.functionExecutor(func.value, func.id)
+                        );
+                }
+                await Promise.all(batch.map((v) => v()));
             } else {
                 this.options.loggingFunction('Nothing to do');
                 await new Promise((res) => {
@@ -97,10 +109,10 @@ export class AsyncThrottle {
         }
     }
 
-    private async functionExecutor(item: TQueueItem) {
+    private async functionExecutor(item: TQueueItem, id: string) {
         try {
             const result = await item.method()(...item.args);
-            this.options.completionCallback(result);
+            this.options.completionCallback({ value: <T>result, id: id });
         } catch (e) {
             this.options.loggingFunction(
                 `Error in functionExecutor: ${(<Error>e).message}`
@@ -117,6 +129,7 @@ export class AsyncThrottle {
 
 type TQueueNode<T> = {
     item: T;
+    id: string;
     next?: TQueueNode<T>;
 };
 
@@ -129,10 +142,11 @@ class Queue<T> {
         return this._size;
     }
 
-    enQueue(value: T) {
+    enQueue(value: T, id: string = new Date().getTime().toString()) {
         this._size++;
         const node: TQueueNode<T> = {
             item: value,
+            id,
             next: undefined,
         };
         if (this.head) {
@@ -147,8 +161,9 @@ class Queue<T> {
         this._size--;
         if (this.head) {
             const value = this.head.item;
+            const id = this.head.id;
             this.head = this.head.next;
-            return value;
+            return { value, id };
         }
         return undefined;
     }

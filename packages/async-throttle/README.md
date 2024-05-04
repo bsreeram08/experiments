@@ -76,7 +76,7 @@ The AsyncThrottle constructor accepts an options object with the following prope
 `failedCallback` (required): A callback function to be invoked when a task fails. It receives the error object as a parameter.
 `maxThreshold` (required): The maximum number of tasks that can be executed concurrently.
 `delayExecutions` (required): The delay (in milliseconds) between each execution loop.
-`loggingFunction` (optional): A custom logging function to log messages. If not provided, the default console.log will be used.
+`loggingFunction` (optional): A custom logging function to log messages.
 
 ### Types
 
@@ -89,3 +89,32 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 ### License
 
 This package is released under the MIT License.
+
+### Note
+
+If you're passing database connection in the args, the connection will not be available when the function gets executed. You'd have to do something like this.
+
+```typescript
+import { createConnection } from 'your-database-library';
+let connection = await createConnection({
+    // Connection configuration
+});
+
+function someDbOperation(connection) {
+    // some operation that uses db connection
+}
+
+// Do
+const task: TAsyncThrottleFunction<[], string> = {
+    args: [],
+    function: async () => {
+        someDbOperation(connection);
+    },
+};
+
+// Don't
+const task2: TAsyncThrottleFunction<[], string> = {
+    args: [connection],
+    function: someDbOperation,
+};
+```
