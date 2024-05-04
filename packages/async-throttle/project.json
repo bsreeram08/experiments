@@ -1,7 +1,7 @@
 {
-    "name": "google-bigquery-ts",
+    "name": "async-throttle",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "packages/google-bigquery-ts/src",
+    "sourceRoot": "packages/async-throttle/src",
     "projectType": "library",
     "tags": [],
     "targets": {
@@ -9,10 +9,10 @@
             "executor": "@nx/js:tsc",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "outputPath": "dist/packages/google-bigquery-ts",
-                "main": "packages/google-bigquery-ts/src/index.ts",
-                "tsConfig": "packages/google-bigquery-ts/tsconfig.lib.json",
-                "assets": ["packages/google-bigquery-ts/*.md"]
+                "outputPath": "dist/packages/async-throttle",
+                "main": "packages/async-throttle/src/index.ts",
+                "tsConfig": "packages/async-throttle/tsconfig.lib.json",
+                "assets": ["packages/async-throttle/*.md"]
             }
         },
         "lint": {
@@ -23,7 +23,7 @@
             "executor": "@nx/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "jestConfig": "packages/google-bigquery-ts/jest.config.ts"
+                "jestConfig": "packages/async-throttle/jest.config.ts"
             }
         }
     }

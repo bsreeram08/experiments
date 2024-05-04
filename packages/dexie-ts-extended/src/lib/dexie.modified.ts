@@ -10,13 +10,13 @@ declare module 'Dexie' {
      * !! Explanation for adding ts-ignore !!
      *
      * Typescript expects all declarations of 'Table' must have identical type parameters.
-     * but our whole point is that we want to overwrite the type parameters for this method
+     * but the whole point is that we want to overwrite the type parameters for this method
      * where()
      *
      * This method is modified from
-     * * where(equalityCriterias: { [key: string]: any;}): Collection<T, TKey>;
+     * * where(equalityCriteria: { [key: string]: any;}): Collection<T, TKey>;
      * to
-     * * where(equalityCriterias: Partial<Record<keyof T, any>>): Collection<T, TKey>;
+     * * where(equalityCriteria: Partial<Record<keyof T, any>>): Collection<T, TKey>;
      *
      * More methods should be modified to bring in suggestions
      */
@@ -34,17 +34,17 @@ declare module 'Dexie' {
             thenShortcut: ThenShortcut<T | undefined, R>
         ): PromiseExtended<R>;
         get(equalityCriterias: {
-            [key: string]: any;
+            [key: string]: unknown;
         }): PromiseExtended<T | undefined>;
         get<R>(
-            equalityCriterias: {
-                [key: string]: any;
+            equalityCriteria: {
+                [key: string]: unknown;
             },
             thenShortcut: ThenShortcut<T | undefined, R>
         ): PromiseExtended<R>;
         where(index: string | string[]): WhereClause<T, TKey>;
         where(
-            equalityCriterias: Partial<Record<keyof T, any>>
+            equalityCriteria: Partial<Record<keyof T, unknown>>
         ): Collection<T, TKey>;
         filter(fn: (obj: T) => boolean): Collection<T, TKey>;
         count(): PromiseExtended<number>;
@@ -55,10 +55,10 @@ declare module 'Dexie' {
             callback: (
                 obj: T,
                 cursor: {
-                    key: any;
+                    key: unknown;
                     primaryKey: TKey;
                 }
-            ) => any
+            ) => unknown
         ): PromiseExtended<void>;
         toArray(): PromiseExtended<Array<T>>;
         toArray<R>(thenShortcut: ThenShortcut<T[], R>): PromiseExtended<R>;
@@ -70,7 +70,7 @@ declare module 'Dexie' {
         update(
             key: TKey | T,
             changes: {
-                [keyPath: string]: any;
+                [keyPath: string]: unknown;
             }
         ): PromiseExtended<number>;
         put(item: T, key?: TKey): PromiseExtended<TKey>;

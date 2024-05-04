@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@mareers/async-throttle": ["packages/async-throttle/src/index.ts"],
             "@mareers/dexie-ts-extended": [
                 "packages/dexie-ts-extended/src/index.ts"
             ],
