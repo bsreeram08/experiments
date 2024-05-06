@@ -22,17 +22,8 @@ Create an instance of `AsyncThrottle` with the desired options:
 
 ```typescript
 const asyncThrottle = new AsyncThrottle({
-    completionCallback: async (result: unknown) => {
-        console.log(`Task completed: ${result}`);
-    },
-    failedCallback: (error: Error) => {
-        console.error(`Task failed: ${error.message}`);
-    },
     maxThreshold: 3,
     delayExecutions: 1000,
-    loggingFunction: (message: string) => {
-        console.log(`[LOG] ${message}`);
-    },
 });
 ```
 
@@ -68,15 +59,40 @@ To stop the async throttle execution, call the stop method:
 asyncThrottle.stop();
 ```
 
+Async Throttle provides a bunch of events to listen to.
+
+-   `result` The result of an execution
+-   `resultError` The error-result of an Execution
+-   `empty` Queue is empty
+-   `add` Enqueued something
+-   `stop` Stopped the AsyncThrottler
+-   `clear` Clear the queue
+-   `log` Internal Log
+
+```typescript
+asyncThrottle.on('result', (res) => console.log(`RESULT: ${JSON.stringify(res)}`));
+asyncThrottle.on('resultError', (res) => console.log(`RESULT_ERROR: ${JSON.stringify(res)}`));
+asyncThrottle.on('empty', () => {
+    asyncThrottle.stop();
+});
+asyncThrottle.on('add', () => {
+    // do when something is added
+});
+asyncThrottle.on('stop', () => {
+    console.log(`Execution stopped`);
+});
+asyncThrottle.on('clear', () => {
+    console.log(`Queue cleared`);
+});
+asyncThrottle.on('log', (message) => console.log(`LOG: ${message}`));
+```
+
 ### Options
 
 The AsyncThrottle constructor accepts an options object with the following properties:
 
-`completionCallback` (required): A callback function to be invoked when a task is completed successfully. It receives the result of the task as a parameter.
-`failedCallback` (required): A callback function to be invoked when a task fails. It receives the error object as a parameter.
 `maxThreshold` (required): The maximum number of tasks that can be executed concurrently.
 `delayExecutions` (required): The delay (in milliseconds) between each execution loop.
-`loggingFunction` (optional): A custom logging function to log messages.
 
 ### Types
 
@@ -114,7 +130,7 @@ const task: TAsyncThrottleFunction<[], string> = {
 
 // Don't
 const task2: TAsyncThrottleFunction<[], string> = {
-    args: [connection],
+    args: [connection], // Connection might not be available
     function: someDbOperation,
 };
 ```
