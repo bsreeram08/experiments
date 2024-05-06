@@ -90,6 +90,14 @@ export class AsyncThrottle<T = TAny> {
         this.ee.emit('clear');
     }
 
+    private async delay() {
+        await new Promise((res) => {
+            setTimeout(() => {
+                res(null);
+            }, this.options.delayExecutions);
+        });
+    }
+
     private async executeFunctions(): Promise<void> {
         // eslint-disable-next-line no-constant-condition
         while (true) {
@@ -119,11 +127,6 @@ export class AsyncThrottle<T = TAny> {
             } else {
                 this.ee.emit('empty');
                 this.ee.emit('log', 'Nothing to do');
-                await new Promise((res) => {
-                    setTimeout(() => {
-                        res(null);
-                    }, this.options.delayExecutions);
-                });
             }
             this.ee.emit(
                 'log',
@@ -133,6 +136,7 @@ export class AsyncThrottle<T = TAny> {
                 'log',
                 `CONSTRAINED_ASYNC: CurrentQueue Size -> ${this.currentQueued}`
             );
+            await this.delay();
         }
     }
 

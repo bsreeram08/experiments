@@ -17,3 +17,9 @@
 ### Feat
 
 -   Removed functions are arguments and updated to listener (EventEmitter)
+
+## 1.0.2 (2024-05-06)
+
+### Feat
+
+-   Added the missing delay on each iteration
