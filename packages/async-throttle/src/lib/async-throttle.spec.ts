@@ -1,35 +1,39 @@
+import { generateID } from '@jetit/id';
 import { AsyncThrottle, TAsyncThrottleFunction } from './async-throttle';
 
 describe('constrainedAsync', () => {
     it('should work', async () => {
         const cs = new AsyncThrottle<unknown>({
-            completionCallback: async function (data) {
-                console.log(data);
-            },
-            failedCallback: (error) => {
-                console.log(error);
-            },
             maxThreshold: 5,
             delayExecutions: 1000,
-            loggingFunction: console.log,
         });
 
+        cs.on('log', (message) => console.log(`LOG: ${message}`));
+        cs.on('result', (res) => console.log(`RESULT: ${JSON.stringify(res)}`));
+        cs.on('resultError', (res) =>
+            console.log(`RESULT_ERROR: ${JSON.stringify(res)}`)
+        );
+        cs.on('empty', () => {
+            cs.stop();
+        });
         for (let i = 0; i < 1000; i++) {
             console.log(`ADDED ${i + 1}`);
-            cs.addToQueue({
-                args: ['100', 10],
-                function: async (num, str) => {
-                    return {
-                        hello: `${num} ${str}`,
-                    };
+            cs.addToQueue(
+                {
+                    args: ['100', 10],
+                    function: async (num, str) => {
+                        return {
+                            hello: `${num} ${str}`,
+                        };
+                    },
                 },
-            });
+                generateID('HEX')
+            );
         }
 
         await new Promise((res) => {
             setTimeout(() => {
                 console.log('Called destroy');
-                cs.stop();
                 res(null);
                 process.exit(0);
             }, 500000);
@@ -37,11 +41,6 @@ describe('constrainedAsync', () => {
     }, 500000);
 
     it('battle test', async () => {
-        // Custom logging function
-        const loggingFunction = (message: string) => {
-            console.log(`[LOG] ${message}`);
-        };
-
         // Async function to simulate a task
         const simulateTask = async (
             taskId: number,
@@ -53,15 +52,23 @@ describe('constrainedAsync', () => {
 
         // Create an instance of ConstrainedAsync with desired options
         const constrainedAsync = new AsyncThrottle({
-            completionCallback: async (result: unknown) => {
-                console.log(`Task completed: ${result}`);
-            },
-            failedCallback: (error: Error) => {
-                console.error(`Task failed: ${error.message}`);
-            },
             maxThreshold: 3,
             delayExecutions: 1000,
-            loggingFunction,
+        });
+
+        constrainedAsync.on('result', async (result) => {
+            console.log(`Task completed [${result.id}] : ${result.value}`);
+        });
+        constrainedAsync.on('resultError', async (result) => {
+            console.error(
+                `Task failed [${result.id}] : ${result.error.message}`
+            );
+        });
+        constrainedAsync.on('log', (message) => {
+            console.log(`[LOG] ${message}`);
+        });
+        constrainedAsync.on('stop', () => {
+            // close all the things that has to be closed
         });
 
         // Create an array of tasks to be added to the queue
