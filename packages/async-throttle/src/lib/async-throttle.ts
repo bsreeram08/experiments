@@ -68,7 +68,7 @@ export class AsyncThrottle<T = TAny> {
 
     addToQueue<T extends TAsyncThrottleFunction<Array<TAny>, unknown>>(
         func: T,
-        id = new Date().getTime().toString()
+        id: string = new Date().getTime().toString()
     ): void {
         this.queue.enQueue(
             { method: () => func.function, args: func.args },
@@ -77,7 +77,11 @@ export class AsyncThrottle<T = TAny> {
         this.ee.emit('add');
     }
 
-    get currentStatus() {
+    get currentStatus(): {
+        queueSize: number;
+        currentlyQueued: number;
+        maxThreshold: number;
+    } {
         return {
             queueSize: this.queue.size,
             currentlyQueued: this.currentQueued,
@@ -85,7 +89,7 @@ export class AsyncThrottle<T = TAny> {
         };
     }
 
-    clearQueue() {
+    clearQueue(): void {
         this.queue.clear();
         this.ee.emit('clear');
     }
@@ -154,7 +158,7 @@ export class AsyncThrottle<T = TAny> {
         this.currentQueued--;
     }
 
-    stop() {
+    stop(): void {
         this.destroy = true;
         this.ee.emit('stop');
     }

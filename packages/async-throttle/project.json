@@ -15,6 +15,17 @@
                 "assets": ["packages/async-throttle/*.md"]
             }
         },
+        "build_release": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    "nx run async-throttle:build_tsc",
+                    "nx run async-throttle:post-process-dts",
+                    "nx run async-throttle:build_es"
+                ],
+                "parallel": false
+            }
+        },
         "lint": {
             "executor": "@nx/eslint:lint",
             "outputs": ["{options.outputFile}"]
@@ -25,6 +36,69 @@
             "options": {
                 "jestConfig": "packages/async-throttle/jest.config.ts"
             }
+        },
+        "build_es": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "main": "packages/async-throttle/src/index.ts",
+                "outputPath": "dist/packages/async-throttle",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/async-throttle/tsconfig.lib.json",
+                "assets": [
+                    {
+                        "glob": "packages/async-throttle/README.md",
+                        "input": ".",
+                        "output": "../../"
+                    }
+                ],
+                "deleteOutputPath": false
+            },
+            "configurations": {
+                "development": {
+                    "minify": false
+                },
+                "production": {
+                    "minify": true,
+                    "bundle": true,
+                    "esbuildOptions": {
+                        "format": "esm",
+                        "target": "es2022",
+                        "platform": "node",
+                        "sourcemap": false,
+                        "minify": true
+                    }
+                }
+            }
+        },
+        "build_tsc": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/packages/async-throttle",
+                "main": "packages/async-throttle/src/index.ts",
+                "tsConfig": "packages/async-throttle/tsconfig.dts.json",
+                "assets": [],
+                "clean": true,
+                "deleteOutputPath": false
+            },
+
+            "configurations": {
+                "development": {
+                    "minify": false
+                },
+                "production": {
+                    "minify": true,
+                    "updateBuildableProjectDepsInPackageJson": false,
+                    "outputPath": "dist/packages/async-throttle"
+                }
+            },
+            "postTargets": ["post-process-dts"]
+        },
+        "post-process-dts": {
+            "command": "ts-node packages/async-throttle/scripts/post-process-dts.ts --log-level=verbose",
+            "dependsOn": ["build_tsc"]
         }
     }
 }
