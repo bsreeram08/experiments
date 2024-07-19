@@ -1,5 +1,43 @@
 {
     "name": "@mareers/async-throttle",
-    "version": "1.0.1",
-    "type": "commonjs"
+    "version": "1.1.1",
+    "type": "commonjs",
+    "description": "A TypeScript library for managing and executing asynchronous functions with constraints and logging capabilities.",
+    "license": "MIT",
+    "author": {
+        "name": "Sreeram Balamurugan",
+        "email": "sreeram@mareers.com",
+        "url": "https://srb.contact"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bsreeram08/experiments.git",
+        "directory": "packages/async-throttle"
+    },
+    "bugs": {
+        "url": "https://github.com/bsreeram08/experiments/issues"
+    },
+    "homepage": "https://github.com/bsreeram08/experiments/tree/main/packages/async-throttle#readme",
+    "keywords": [
+        "async",
+        "throttle",
+        "async-throttle",
+        "typescript",
+        "library",
+        "ts",
+        "javascript",
+        "js",
+        "node",
+        "npm",
+        "queue"
+    ],
+    "displayName": "async-throttle",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/mareers/experiments/tree/main/packages/async-throttle/License.md"
+        }
+    ]
 }

@@ -1,0 +1,24 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../../dist/out-tsc",
+        "declaration": true,
+        "types": ["node"],
+        "emitDeclarationOnly": true,
+        "moduleDetection": "auto",
+        "outFile": "../../dist/packages/async-throttle/index.d.ts",
+        "module": "ESNext",
+        "sourceMap": false,
+        "declarationMap": false,
+        "isolatedDeclarations": true,
+        "paths": {},
+        "traceResolution": false,
+        "noEmitHelpers": true,
+        "importHelpers": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strict": true
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+}

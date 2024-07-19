@@ -1,4 +1,5 @@
-import { EventEmitter } from 'stream';
+import { EventEmitter } from './event';
+import { Queue } from './queue';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TAny = any;
@@ -52,7 +53,6 @@ export class AsyncThrottle<T = TAny> {
         this.ee = new EventEmitter<TEventEmitterEvents>({
             captureRejections: false,
         });
-        this.ee.setMaxListeners(0);
         this.executeFunctions()
             .then(() => {
                 this.ee.emit('log', `Execution complete`);
@@ -68,7 +68,7 @@ export class AsyncThrottle<T = TAny> {
 
     addToQueue<T extends TAsyncThrottleFunction<Array<TAny>, unknown>>(
         func: T,
-        id = new Date().getTime().toString()
+        id: string = new Date().getTime().toString()
     ): void {
         this.queue.enQueue(
             { method: () => func.function, args: func.args },
@@ -77,7 +77,11 @@ export class AsyncThrottle<T = TAny> {
         this.ee.emit('add');
     }
 
-    get currentStatus() {
+    get currentStatus(): {
+        queueSize: number;
+        currentlyQueued: number;
+        maxThreshold: number;
+    } {
         return {
             queueSize: this.queue.size,
             currentlyQueued: this.currentQueued,
@@ -85,9 +89,17 @@ export class AsyncThrottle<T = TAny> {
         };
     }
 
-    clearQueue() {
+    clearQueue(): void {
         this.queue.clear();
         this.ee.emit('clear');
+    }
+
+    private async delay(): Promise<void> {
+        await new Promise((res) => {
+            setTimeout(() => {
+                res(null);
+            }, this.options.delayExecutions);
+        });
     }
 
     private async executeFunctions(): Promise<void> {
@@ -119,11 +131,6 @@ export class AsyncThrottle<T = TAny> {
             } else {
                 this.ee.emit('empty');
                 this.ee.emit('log', 'Nothing to do');
-                await new Promise((res) => {
-                    setTimeout(() => {
-                        res(null);
-                    }, this.options.delayExecutions);
-                });
             }
             this.ee.emit(
                 'log',
@@ -133,10 +140,14 @@ export class AsyncThrottle<T = TAny> {
                 'log',
                 `CONSTRAINED_ASYNC: CurrentQueue Size -> ${this.currentQueued}`
             );
+            await this.delay();
         }
     }
 
-    private async functionExecutor(item: TQueueItem, id: string) {
+    private async functionExecutor(
+        item: TQueueItem,
+        id: string
+    ): Promise<void> {
         try {
             const result = await item.method()(...item.args);
             this.ee.emit('result', { value: <T>result, id });
@@ -150,59 +161,8 @@ export class AsyncThrottle<T = TAny> {
         this.currentQueued--;
     }
 
-    stop() {
+    stop(): void {
         this.destroy = true;
         this.ee.emit('stop');
-    }
-}
-
-type TQueueNode<T> = {
-    item: T;
-    id: string;
-    next?: TQueueNode<T>;
-};
-
-class Queue<T> {
-    private head?: TQueueNode<T>;
-    private tail?: TQueueNode<T>;
-    private _size = 0;
-
-    get size() {
-        return this._size;
-    }
-
-    enQueue(value: T, id: string) {
-        this._size++;
-        const node: TQueueNode<T> = {
-            item: value,
-            id,
-            next: undefined,
-        };
-        if (this.head) {
-            if (this.tail) this.tail.next = node;
-            this.tail = node;
-        } else {
-            this.head = node;
-            this.tail = node;
-        }
-    }
-    deQueue() {
-        this._size--;
-        if (this.head) {
-            const value = this.head.item;
-            const id = this.head.id;
-            this.head = this.head.next;
-            return { value, id };
-        }
-        return undefined;
-    }
-
-    peek() {
-        return this.head?.item;
-    }
-
-    clear() {
-        this._size = 0;
-        this.head = this.tail = undefined;
     }
 }
