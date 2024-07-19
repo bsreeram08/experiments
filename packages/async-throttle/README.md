@@ -2,9 +2,7 @@
 
 A TypeScript library for managing and executing asynchronous functions with constraints and logging capabilities. async-throttle helps you control the concurrent execution of asynchronous tasks, making it easier to manage resource usage and prevent overwhelming external services.
 
-![npm version](https://img.shields.io/npm/v/@mareers/async-throttle)
-![build status](https://img.shields.io/github/workflow/status/mareers/async-throttle/CI)
-![test coverage](https://img.shields.io/codecov/c/github/mareers/async-throttle)
+![npm version](https://img.shields.io/npm/v/@bsreeram08/async-throttle)
 
 ## Table of Contents
 

@@ -23,3 +23,12 @@
 ### Feat
 
 -   Added the missing delay on each iteration
+
+## 1.1.2 (2024-07-19)
+
+### Feat
+
+-   Added improved documentation
+-   Added license
+-   Included own EventEmitter
+-   Updated to esbuild from tsc
