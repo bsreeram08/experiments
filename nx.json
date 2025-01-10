@@ -58,5 +58,6 @@
         "appsDir": "packages",
         "libsDir": "packages"
     },
-    "useInferencePlugins": false
+    "useInferencePlugins": false,
+    "useLegacyCache": true
 }

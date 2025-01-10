@@ -32,3 +32,10 @@
 -   Added license
 -   Included own EventEmitter
 -   Updated to esbuild from tsc
+
+## 1.2.0 (2023-11-07)
+
+### Feat
+
+-   Updated NX to 20.3.1
+-   Updated dependencies
