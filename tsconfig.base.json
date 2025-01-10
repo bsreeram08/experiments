@@ -21,7 +21,8 @@
             ],
             "@mareers/google-bigquery-ts": [
                 "packages/google-bigquery-ts/src/index.ts"
-            ]
+            ],
+            "@mareers/emcryption": ["/packages/emcryption/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

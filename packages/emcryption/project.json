@@ -1,0 +1,29 @@
+{
+    "name": "emcryption",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/emcryption/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/packages/emcryption",
+                "main": "packages/emcryption/src/index.ts",
+                "tsConfig": "packages/emcryption/tsconfig.lib.json",
+                "assets": ["packages/emcryption/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "packages/emcryption/jest.config.ts"
+            }
+        }
+    }
+}
