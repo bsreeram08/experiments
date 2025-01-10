@@ -97,8 +97,7 @@
             "postTargets": ["post-process-dts"]
         },
         "post-process-dts": {
-            "command": "ts-node packages/async-throttle/scripts/post-process-dts.ts --log-level=verbose",
-            "dependsOn": ["build_tsc"]
+            "command": "cp -r packages/async-throttle/scripts/index.d.ts dist/packages/async-throttle/index.d.ts"
         }
     }
 }
