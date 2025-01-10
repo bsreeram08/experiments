@@ -39,3 +39,4 @@
 
 -   Updated NX to 20.3.1
 -   Updated dependencies
+-   Changed from commonjs to module
