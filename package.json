@@ -17,9 +17,9 @@
         "tslib": "^2.3.0"
     },
     "devDependencies": {
-        "@commitlint/cli": "^17.5.1",
-        "@commitlint/config-conventional": "^17.4.4",
-        "@commitlint/config-nx-scopes": "^17.4.3",
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@commitlint/config-nx-scopes": "^19.5.0",
         "@nx/esbuild": "20.3.1",
         "@nx/eslint": "20.3.1",
         "@nx/eslint-plugin": "20.3.1",
