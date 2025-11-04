@@ -25,6 +25,35 @@ export class EventEmitter<
         return this;
     }
 
+    removeListener(
+        event: K,
+        listener: (...args: T[K]) => void | Promise<void>
+    ): this {
+        if (!this.listeners[event]) {
+            return this;
+        }
+        const index = this.listeners[event].indexOf(
+            listener as (...args: Array<unknown>) => void
+        );
+        if (index !== -1) {
+            this.listeners[event].splice(index, 1);
+        }
+        return this;
+    }
+
+    removeAllListeners(event?: K): this {
+        if (event) {
+            delete this.listeners[event];
+        } else {
+            this.listeners = <never>{};
+        }
+        return this;
+    }
+
+    listenerCount(event: K): number {
+        return this.listeners[event]?.length ?? 0;
+    }
+
     emit(event: K, ...args: T[K]): boolean {
         if (!this.listeners[event]) {
             return false;

@@ -1,6 +1,6 @@
 {
     "name": "@mareers/async-throttle",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "type": "module",
     "description": "A TypeScript library for managing and executing asynchronous functions with constraints and logging capabilities.",
     "license": "MIT",
@@ -29,15 +29,40 @@
         "js",
         "node",
         "npm",
-        "queue"
+        "queue",
+        "concurrency",
+        "rate-limit",
+        "backpressure"
     ],
     "displayName": "async-throttle",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./index.d.ts",
+                "default": "./index.js"
+            },
+            "require": {
+                "types": "./index.d.cts",
+                "default": "./index.cjs"
+            }
+        }
+    },
+    "main": "./index.cjs",
+    "module": "./index.js",
+    "types": "./index.d.ts",
+    "files": [
+        "*.js",
+        "*.cjs",
+        "*.d.ts",
+        "*.d.cts",
+        "README.md",
+        "LICENSE"
+    ],
+    "sideEffects": false,
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/bsreeram08/experiments/tree/main/packages/async-throttle/License.md"
+            "url": "https://github.com/bsreeram08/experiments/tree/main/packages/async-throttle/LICENSE"
         }
     ]
 }

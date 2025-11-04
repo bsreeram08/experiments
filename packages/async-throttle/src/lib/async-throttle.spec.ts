@@ -62,7 +62,7 @@ describe('constrainedAsync', () => {
         });
         constrainedAsync.on('resultError', async (result) => {
             console.error(
-                `Task failed [${result.id}] : ${result.error.message}`
+                `Task failed [${result.id}] : ${result.error?.message}`
             );
         });
         constrainedAsync.on('log', (message) => {
@@ -174,7 +174,7 @@ describe('constrainedAsync', () => {
         });
         constrainedAsync.on('resultError', async (result) => {
             console.error(
-                `Task failed [${result.id}] : ${result.error.message}`
+                `Task failed [${result.id}] : ${result.error?.message}`
             );
         });
         constrainedAsync.on('log', (message) => {

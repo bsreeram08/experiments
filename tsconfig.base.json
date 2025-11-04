@@ -4,7 +4,9 @@
         "rootDir": ".",
         "sourceMap": true,
         "declaration": false,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
+        "resolvePackageJsonExports": true,
+        "resolvePackageJsonImports": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
@@ -12,17 +14,7 @@
         "module": "esnext",
         "lib": ["es2017", "dom"],
         "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "@mareers/async-throttle": ["packages/async-throttle/src/index.ts"],
-            "@mareers/dexie-ts-extended": [
-                "packages/dexie-ts-extended/src/index.ts"
-            ],
-            "@mareers/google-bigquery-ts": [
-                "packages/google-bigquery-ts/src/index.ts"
-            ]
-        }
+        "skipDefaultLibCheck": true
     },
     "exclude": ["node_modules", "tmp"]
 }

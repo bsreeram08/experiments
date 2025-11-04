@@ -56,15 +56,13 @@ describe('database function', () => {
 
     it('should throw an error if the database is not open', async () => {
         db.closeDatabase();
-        expect(() => db.getTable('users')).toThrowError(
+        expect(() => db.getTable('users')).toThrow(
             'Database testDB is not open.'
         );
     });
 
     it('should throw an error if the database is already closed', async () => {
         db.closeDatabase();
-        expect(() => db.closeDatabase()).toThrowError(
-            'Database is already closed.'
-        );
+        expect(() => db.closeDatabase()).toThrow('Database is already closed.');
     });
 });
